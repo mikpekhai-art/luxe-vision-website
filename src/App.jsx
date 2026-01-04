@@ -12,7 +12,9 @@ import {
   Sparkles,
   Users,
   FileText,
-  DollarSign
+  DollarSign,
+  Facebook,
+  Phone
 } from 'lucide-react';
 
 // --- Components ---
@@ -23,7 +25,7 @@ const Button = ({ children, variant = 'primary', className = '', onClick, icon: 
     primary: "bg-gold-500 hover:bg-gold-600 text-white focus:ring-gold-500 shadow-lg shadow-gold-500/20",
     secondary: "bg-[#2D2424] text-white border border-gold-500/30 hover:bg-gray-800 focus:ring-gray-500", // Softened black to warm charcoal
     outline: "bg-transparent border-2 border-[#2D2424] text-[#2D2424] hover:bg-[#2D2424] hover:text-white",
-    white: "bg-white text-[#2D2424] hover:bg-pink-50 shadow-lg"
+    white: "bg-white text-[#2D2424] hover:bg-[#FFE4E6] shadow-lg" // Hover changed to bold blush
   };
 
   return (
@@ -41,7 +43,7 @@ const PackageCard = ({ title, price, description, features, recommended = false,
   <div className={`relative flex flex-col p-8 rounded-2xl transition-all duration-300 ${
     recommended 
       ? 'bg-[#2D2424] text-white shadow-2xl scale-105 border border-gold-500 z-10' // Warm charcoal bg
-      : 'bg-white text-gray-800 shadow-xl border border-pink-100 hover:shadow-2xl hover:-translate-y-1'
+      : 'bg-white text-gray-800 shadow-xl border border-[#FECDD3] hover:shadow-2xl hover:-translate-y-1' // Border changed to bolder pink
   }`}>
     {recommended && (
       <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-gold-500 text-white text-xs font-bold px-4 py-1 rounded-full uppercase tracking-wider shadow-md">
@@ -110,10 +112,10 @@ const QuizModal = ({ isOpen, onClose, onResult }) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#2D2424]/60 backdrop-blur-sm">
-      <div className="bg-[#FFF5F7] rounded-2xl max-w-lg w-full p-8 shadow-2xl animate-fadeIn border border-white">
+      <div className="bg-[#FFE4E6] rounded-2xl max-w-lg w-full p-8 shadow-2xl animate-fadeIn border border-white"> {/* Updated BG */}
         <div className="flex justify-between items-center mb-6">
           <h3 className="text-2xl font-serif font-bold text-[#2D2424]">Let's find your match</h3>
-          <button onClick={onClose} className="p-2 hover:bg-pink-100 rounded-full text-[#2D2424]"><X className="w-5 h-5" /></button>
+          <button onClick={onClose} className="p-2 hover:bg-[#FECDD3] rounded-full text-[#2D2424]"><X className="w-5 h-5" /></button> {/* Updated hover */}
         </div>
         
         <div className="mb-8">
@@ -128,7 +130,7 @@ const QuizModal = ({ isOpen, onClose, onResult }) => {
               <button
                 key={idx}
                 onClick={() => handleAnswer(option.score)}
-                className="w-full text-left p-4 bg-white border border-pink-100 rounded-xl hover:border-gold-500 hover:bg-white/80 transition-colors flex justify-between items-center group shadow-sm"
+                className="w-full text-left p-4 bg-white border border-[#FECDD3] rounded-xl hover:border-gold-500 hover:bg-white/80 transition-colors flex justify-between items-center group shadow-sm" // Updated border
               >
                 <span className="text-gray-700">{option.text}</span>
                 <ChevronRight className="w-4 h-4 text-gray-300 group-hover:text-gold-500" />
@@ -175,7 +177,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FFF5F7] font-sans text-[#2D2424] selection:bg-gold-200">
+    <div className="min-h-screen bg-[#FFE4E6] font-sans text-[#2D2424] selection:bg-gold-200"> {/* Updated Main BG to Bolder Blush */}
       
       {/* Navigation */}
       <nav className={`fixed w-full z-40 transition-all duration-300 ${scrolled ? 'bg-white/95 backdrop-blur-md shadow-sm py-4' : 'bg-transparent py-6'}`}>
@@ -197,7 +199,7 @@ export default function App() {
 
           {/* Desktop Menu */}
           <div className={`hidden md:flex space-x-8 ${scrolled ? 'text-gray-600' : 'text-white'}`}>
-            {['About', 'Services', 'Process', 'Contact'].map((item) => (
+            {['About', 'Packages', 'Process', 'Contact'].map((item) => (
               <button 
                 key={item}
                 onClick={() => scrollToSection(item.toLowerCase())}
@@ -222,12 +224,12 @@ export default function App() {
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="absolute top-full left-0 w-full bg-[#FFF5F7] shadow-xl p-6 md:hidden flex flex-col space-y-4">
-            {['About', 'Services', 'Process', 'Contact'].map((item) => (
+          <div className="absolute top-full left-0 w-full bg-[#FFE4E6] shadow-xl p-6 md:hidden flex flex-col space-y-4"> {/* Updated BG */}
+            {['About', 'Packages', 'Process', 'Contact'].map((item) => (
               <button 
                 key={item}
                 onClick={() => scrollToSection(item.toLowerCase())}
-                className="text-left text-lg font-medium py-2 border-b border-pink-200 text-[#2D2424]"
+                className="text-left text-lg font-medium py-2 border-b border-[#FECDD3] text-[#2D2424]" // Updated border
               >
                 {item}
               </button>
@@ -239,12 +241,12 @@ export default function App() {
 
       {/* Hero Section */}
       <header className="relative h-screen flex items-center justify-center overflow-hidden bg-[#2D2424]">
-        {/* Background Image with Softer Overlay */}
+        {/* Background Image with Darker Overlay for Text Readability */}
         <div className="absolute inset-0 z-0">
           {!heroImageError ? (
              <img 
-               src="https://images.unsplash.com/photo-1522413452208-996ff3f3e740?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80" 
-               alt="Event Setup with Cherry Blossoms" 
+               src="https://images.unsplash.com/photo-1519167758481-83f550bb49b3?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80" 
+               alt="Event coming alive" 
                className="w-full h-full object-cover"
                onError={() => setHeroImageError(true)}
              />
@@ -252,8 +254,8 @@ export default function App() {
             // Fallback gradient if image fails
             <div className="w-full h-full bg-gradient-to-br from-[#2D2424] via-[#4A3B3B] to-[#2D2424]"></div>
           )}
-          {/* Softer overlay gradient */}
-          <div className="absolute inset-0 bg-gradient-to-b from-[#2D2424]/50 via-[#2D2424]/30 to-[#2D2424]/60"></div>
+          {/* Darker overlay gradient to ensure text stands out */}
+          <div className="absolute inset-0 bg-gradient-to-b from-[#2D2424]/80 via-[#2D2424]/60 to-[#2D2424]/80"></div>
         </div>
 
         <div className="container mx-auto px-6 relative z-10 text-center text-white">
@@ -263,7 +265,7 @@ export default function App() {
               Your Vision.<br />Our Reality.
             </h1>
             <p className="text-lg md:text-xl text-gray-100 max-w-2xl mx-auto mb-10 font-light">
-              Think of us as your middleman. You tell us your vision, and we source the vendors, design the details, and coordinate the chaos.
+              Are you overwhelmed with an upcoming event? Think of us as your middleman. You tell us your vision, and we source the vendors, design the details, and coordinate the chaos.
             </p>
             <div className="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-4">
               <Button variant="primary" onClick={() => scrollToSection('packages')}>View Packages</Button>
@@ -282,7 +284,7 @@ export default function App() {
           <div className="flex flex-col md:flex-row items-center gap-12">
             <div className="w-full md:w-1/2">
               <div className="relative">
-                <div className="absolute -top-4 -left-4 w-24 h-24 bg-pink-100 rounded-full opacity-60"></div>
+                <div className="absolute -top-4 -left-4 w-24 h-24 bg-pink-300 rounded-full opacity-60"></div> {/* Darker blob */}
                 <img 
                   src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" 
                   alt="Planning" 
@@ -301,12 +303,12 @@ export default function App() {
               </p>
               
               <div className="grid grid-cols-2 gap-4">
-                <div className="p-4 bg-[#FFF5F7] rounded-lg border border-pink-100">
+                <div className="p-4 bg-[#FFE4E6] rounded-lg border border-[#FECDD3]"> {/* Updated BG & Border */}
                   <Users className="w-8 h-8 text-gold-500 mb-2" />
                   <h4 className="font-bold text-[#2D2424]">Expert Vendor Sourcing</h4>
                   <p className="text-xs text-gray-500">We find the best teams for you.</p>
                 </div>
-                <div className="p-4 bg-[#FFF5F7] rounded-lg border border-pink-100">
+                <div className="p-4 bg-[#FFE4E6] rounded-lg border border-[#FECDD3]"> {/* Updated BG & Border */}
                   <FileText className="w-8 h-8 text-gold-500 mb-2" />
                   <h4 className="font-bold text-[#2D2424]">Vision Blueprints</h4>
                   <p className="text-xs text-gray-500">Detailed PDFs & moodboards.</p>
@@ -318,7 +320,7 @@ export default function App() {
       </section>
 
       {/* Packages Section */}
-      <section id="packages" className="py-24 bg-[#FFF5F7]">
+      <section id="packages" className="py-24 bg-[#FFE4E6]"> {/* Updated BG */}
         <div className="container mx-auto px-6">
           <div className="text-center max-w-3xl mx-auto mb-16">
             <h2 className="text-4xl font-serif font-bold mb-4 text-[#2D2424]">Curated Packages</h2>
@@ -336,9 +338,9 @@ export default function App() {
               features={[
                 "1-Hour Virtual Consultation",
                 "Customized Pinterest Moodboard",
-                "Event Concept Summary (PDF)",
+                "Event Concept Summary (Theme, Color Palette, Suggested Decor Direction, Style Recommendations)",
                 "Vendor Recommendations List (3-5 per category)",
-                "Canva Invitation Template (1 Design)",
+                "Digital Suite (Invites, Menu, Welcome Sign)",
                 "No on-site coordination"
               ]}
               onSelect={() => scrollToSection('contact')}
@@ -357,7 +359,8 @@ export default function App() {
                 "Digital Invitation Suite (Invites, Menu, Welcome Sign)",
                 "Event Budget Planner",
                 "Event Timeline Template",
-                "Check-in calls & meetings"
+                "Check-in calls & meetings",
+                "On-site coordination before the event to ensure everything is as discussed with your vision"
               ]}
               onSelect={() => scrollToSection('contact')}
             />
@@ -373,13 +376,31 @@ export default function App() {
                 "Full Vendor Management (Quotes & Negotiation)",
                 "Up to 5 Digital Assets Designed",
                 "Final Event Day Strategy Guide",
-                "Unlimited Messaging Support"
+                "Unlimited Messaging Support",
+                "On-site coordination before and on the day of your event"
               ]}
               onSelect={() => scrollToSection('contact')}
             />
           </div>
 
-          <div className="mt-12 text-center">
+          {/* New Customization Block */}
+          <div className="mt-12 max-w-3xl mx-auto bg-white rounded-xl p-8 shadow-md border border-[#FECDD3] text-center"> {/* Updated Border */}
+            <h3 className="text-xl font-serif font-bold text-[#2D2424] mb-4 flex items-center justify-center">
+              <Sparkles className="w-5 h-5 text-gold-500 mr-2" />
+              Need a Custom Fit?
+            </h3>
+            <p className="text-gray-600 mb-2 leading-relaxed">
+              We know every event is unique. Our packages are <strong>completely flexible</strong>—feel free to mix and match to get a little bit of all three!
+            </p>
+            <p className="text-gray-600 mb-4 leading-relaxed">
+              <strong>On-site coordination</strong> is available as an add-on for <em>all</em> packages. Just ask us, and we'll make it work.
+            </p>
+            <p className="text-sm text-gray-500 italic">
+              * Custom pricing may differ based on your specific needs.
+            </p>
+          </div>
+
+          <div className="mt-8 text-center">
             <p className="text-gray-500 italic">
               * Prices vary depending on location and market. 50% deposit required to secure booking.
             </p>
@@ -406,10 +427,10 @@ export default function App() {
               { step: "05", title: "Delivery", desc: "You receive your final Guide/Blueprint and execute a flawless event." }
             ].map((item, index) => (
               <div key={index} className="group relative">
-                <div className="text-6xl font-serif font-bold text-gray-700 mb-4 group-hover:text-gold-500 transition-colors">
+                <div className="text-6xl font-serif font-bold text-gold-400 mb-4 group-hover:text-white transition-colors">
                   {item.step}
                 </div>
-                <h3 className="text-xl font-bold mb-2 text-pink-50">{item.title}</h3>
+                <h3 className="text-xl font-bold mb-2 text-pink-100">{item.title}</h3> {/* Updated text color */}
                 <p className="text-gray-400 text-sm">{item.desc}</p>
               </div>
             ))}
@@ -420,7 +441,7 @@ export default function App() {
       {/* Contact Section */}
       <section id="contact" className="py-24 bg-white relative">
         <div className="container mx-auto px-6 relative z-10">
-          <div className="max-w-4xl mx-auto bg-[#FFF5F7] rounded-3xl shadow-xl overflow-hidden flex flex-col md:flex-row border border-pink-100">
+          <div className="max-w-4xl mx-auto bg-[#FFE4E6] rounded-3xl shadow-xl overflow-hidden flex flex-col md:flex-row border border-[#FECDD3]"> {/* Updated BG & Border */}
             
             {/* Contact Info */}
             <div className="bg-[#2D2424] text-white p-10 md:w-2/5 flex flex-col justify-between">
@@ -437,11 +458,22 @@ export default function App() {
                   </div>
                   <div className="flex items-center space-x-3">
                     <Instagram className="text-gold-500 w-5 h-5" />
-                    <span>@LUXEVISION</span>
+                    <a href="https://www.instagram.com/luxevision_events?igsh=MWlhamRiaTJqMGNvdw%3D%3D&utm_source=qr" target="_blank" rel="noopener noreferrer" className="hover:text-gold-500 transition-colors">@luxevision_events</a>
                   </div>
                   <div className="flex items-center space-x-3">
-                    <Calendar className="text-gold-500 w-5 h-5" />
-                    <span>Mon - Fri | 8 AM - 4 PM</span>
+                    <Facebook className="text-gold-500 w-5 h-5" />
+                    <a href="https://www.facebook.com/share/1QhP7YuyJM/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer" className="hover:text-gold-500 transition-colors">@LuxeVision Events</a>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <Phone className="text-gold-500 w-5 h-5" />
+                    <span>Call/WhatsApp: 604-561-4209</span>
+                  </div>
+                  <div className="flex items-start space-x-3">
+                    <Calendar className="text-gold-500 w-5 h-5 mt-1" />
+                    <div className="flex flex-col">
+                      <span>Mon - Fri | 8 AM - 4 PM</span>
+                      <span className="text-xs text-gray-400 mt-1">If you want to contact us at non-office hours, leave us a message on any of our socials.</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -471,7 +503,7 @@ export default function App() {
                     <option>Wedding</option>
                     <option>Birthday</option>
                     <option>Corporate Event</option>
-                    <option>Baby Shower</option>
+                    <option>Shower (Wedding, Baby, Business...etc)</option>
                     <option>Other</option>
                   </select>
                 </div>
@@ -508,9 +540,10 @@ export default function App() {
             <p className="text-gray-400 text-sm">Turning your vision into reality, one detail at a time.</p>
           </div>
           <div className="flex space-x-6 text-sm text-gray-400">
-            <a href="#" className="hover:text-gold-500 transition-colors">Instagram</a>
+            <a href="https://www.instagram.com/luxevision_events?igsh=MWlhamRiaTJqMGNvdw%3D%3D&utm_source=qr" target="_blank" rel="noopener noreferrer" className="hover:text-gold-500 transition-colors">Instagram</a>
+            <a href="https://www.facebook.com/share/1QhP7YuyJM/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer" className="hover:text-gold-500 transition-colors">Facebook</a>
             <a href="#" className="hover:text-gold-500 transition-colors">Email</a>
-            <a href="#" className="hover:text-gold-500 transition-colors">WhatsApp</a>
+            <a href="https://wa.me/16045614209" target="_blank" rel="noopener noreferrer" className="hover:text-gold-500 transition-colors">WhatsApp</a>
           </div>
         </div>
         <div className="container mx-auto px-6 mt-8 text-center text-xs text-gray-500">

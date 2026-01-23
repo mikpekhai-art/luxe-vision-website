@@ -225,6 +225,66 @@ export default function App() {
   const [scrolled, setScrolled] = useState(false);
   const [logoError, setLogoError] = useState(false);
   const [heroImageError, setHeroImageError] = useState(false);
+  
+  const [contactForm, setContactForm] = useState({
+    name: '',
+    eventDate: '',
+    eventType: 'Wedding',
+    package: 'Luxe Essentials ($75-$150)',
+    vision: ''
+  });
+  const [contactStatus, setContactStatus] = useState({ loading: false, message: '', error: false });
+  
+  const [vendorForm, setVendorForm] = useState({
+    contactName: '',
+    businessName: '',
+    businessType: '',
+    socials: '',
+    notes: ''
+  });
+  const [vendorStatus, setVendorStatus] = useState({ loading: false, message: '', error: false });
+
+  const handleContactSubmit = async (e) => {
+    e.preventDefault();
+    setContactStatus({ loading: true, message: '', error: false });
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(contactForm)
+      });
+      const data = await res.json();
+      if (data.success) {
+        setContactStatus({ loading: false, message: 'Thank you! We\'ll be in touch within 24 hours.', error: false });
+        setContactForm({ name: '', eventDate: '', eventType: 'Wedding', package: 'Luxe Essentials ($75-$150)', vision: '' });
+      } else {
+        setContactStatus({ loading: false, message: data.message, error: true });
+      }
+    } catch (err) {
+      setContactStatus({ loading: false, message: 'Something went wrong. Please try again.', error: true });
+    }
+  };
+
+  const handleVendorSubmit = async (e) => {
+    e.preventDefault();
+    setVendorStatus({ loading: true, message: '', error: false });
+    try {
+      const res = await fetch('/api/vendor', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(vendorForm)
+      });
+      const data = await res.json();
+      if (data.success) {
+        setVendorStatus({ loading: false, message: 'Application submitted! We\'ll reach out soon.', error: false });
+        setVendorForm({ contactName: '', businessName: '', businessType: '', socials: '', notes: '' });
+      } else {
+        setVendorStatus({ loading: false, message: data.message, error: true });
+      }
+    } catch (err) {
+      setVendorStatus({ loading: false, message: 'Something went wrong. Please try again.', error: true });
+    }
+  };
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -685,7 +745,7 @@ export default function App() {
             </div>
             {/* Form */}
             <div className="p-10 md:w-3/5">
-              <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+              <form className="space-y-6" onSubmit={handleContactSubmit}>
                 <div className="grid grid-cols-2 gap-6">
                   <div>
                     <label className="block text-xs font-bold uppercase text-gray-500 mb-2">
@@ -693,6 +753,9 @@ export default function App() {
                     </label>
                     <input
                       type="text"
+                      required
+                      value={contactForm.name}
+                      onChange={(e) => setContactForm({...contactForm, name: e.target.value})}
                       className="w-full border-b border-gray-300 py-2 focus:border-gold-500 outline-none bg-transparent text-gray-800 placeholder-gray-400"
                       placeholder="Jane Doe"
                     />
@@ -703,6 +766,9 @@ export default function App() {
                     </label>
                     <input
                       type="date"
+                      required
+                      value={contactForm.eventDate}
+                      onChange={(e) => setContactForm({...contactForm, eventDate: e.target.value})}
                       className="w-full border-b border-gray-300 py-2 focus:border-gold-500 outline-none bg-transparent text-gray-800"
                     />
                   </div>
@@ -712,7 +778,11 @@ export default function App() {
                   <label className="block text-xs font-bold uppercase text-gray-500 mb-2">
                     Event Type
                   </label>
-                  <select className="w-full border-b border-gray-300 py-2 focus:border-gold-500 outline-none bg-transparent text-gray-800">
+                  <select 
+                    value={contactForm.eventType}
+                    onChange={(e) => setContactForm({...contactForm, eventType: e.target.value})}
+                    className="w-full border-b border-gray-300 py-2 focus:border-gold-500 outline-none bg-transparent text-gray-800"
+                  >
                     <option>Wedding</option>
                     <option>Birthday</option>
                     <option>Corporate Event</option>
@@ -725,7 +795,11 @@ export default function App() {
                   <label className="block text-xs font-bold uppercase text-gray-500 mb-2">
                     Interested Package
                   </label>
-                  <select className="w-full border-b border-gray-300 py-2 focus:border-gold-500 outline-none bg-transparent text-gray-800">
+                  <select 
+                    value={contactForm.package}
+                    onChange={(e) => setContactForm({...contactForm, package: e.target.value})}
+                    className="w-full border-b border-gray-300 py-2 focus:border-gold-500 outline-none bg-transparent text-gray-800"
+                  >
                     <option>Luxe Essentials ($75-$150)</option>
                     <option>Luxe Signature ($150-$350)</option>
                     <option>Luxe Elite ($350-$800+)</option>
@@ -738,13 +812,21 @@ export default function App() {
                     Your Vision
                   </label>
                   <textarea
+                    value={contactForm.vision}
+                    onChange={(e) => setContactForm({...contactForm, vision: e.target.value})}
                     className="w-full border-b border-gray-300 py-2 focus:border-gold-500 outline-none bg-transparent h-24 resize-none text-gray-800 placeholder-gray-400"
                     placeholder="Tell us about your theme, colors, or vibes..."
                   ></textarea>
                 </div>
 
-                <Button variant="primary" className="w-full">
-                  Send Inquiry
+                {contactStatus.message && (
+                  <div className={`p-3 rounded-lg text-sm ${contactStatus.error ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'}`}>
+                    {contactStatus.message}
+                  </div>
+                )}
+
+                <Button variant="primary" className="w-full" disabled={contactStatus.loading}>
+                  {contactStatus.loading ? 'Sending...' : 'Send Inquiry'}
                 </Button>
               </form>
             </div>
@@ -770,7 +852,7 @@ export default function App() {
             </div>
 
             <div className="bg-[#3A3232] rounded-3xl p-8 md:p-12 shadow-2xl border border-white/5">
-              <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+              <form className="space-y-6" onSubmit={handleVendorSubmit}>
                 <div className="grid md:grid-cols-2 gap-8">
                   {/* Name */}
                   <div>
@@ -779,6 +861,9 @@ export default function App() {
                     </label>
                     <input
                       type="text"
+                      required
+                      value={vendorForm.contactName}
+                      onChange={(e) => setVendorForm({...vendorForm, contactName: e.target.value})}
                       className="w-full bg-transparent border-b border-gray-600 py-3 text-white focus:border-gold-500 outline-none transition-colors placeholder-gray-500"
                       placeholder="Your Name"
                     />
@@ -791,6 +876,9 @@ export default function App() {
                     </label>
                     <input
                       type="text"
+                      required
+                      value={vendorForm.businessName}
+                      onChange={(e) => setVendorForm({...vendorForm, businessName: e.target.value})}
                       className="w-full bg-transparent border-b border-gray-600 py-3 text-white focus:border-gold-500 outline-none transition-colors placeholder-gray-500"
                       placeholder="Luxe Rentals, etc."
                     />
@@ -803,6 +891,9 @@ export default function App() {
                     </label>
                     <input
                       type="text"
+                      required
+                      value={vendorForm.businessType}
+                      onChange={(e) => setVendorForm({...vendorForm, businessType: e.target.value})}
                       className="w-full bg-transparent border-b border-gray-600 py-3 text-white focus:border-gold-500 outline-none transition-colors placeholder-gray-500"
                       placeholder="Florist, Caterer, Venue..."
                     />
@@ -815,6 +906,9 @@ export default function App() {
                     </label>
                     <input
                       type="text"
+                      required
+                      value={vendorForm.socials}
+                      onChange={(e) => setVendorForm({...vendorForm, socials: e.target.value})}
                       className="w-full bg-transparent border-b border-gray-600 py-3 text-white focus:border-gold-500 outline-none transition-colors placeholder-gray-500"
                       placeholder="@instagram, website.com, or email..."
                     />
@@ -827,17 +921,26 @@ export default function App() {
                     Notes
                   </label>
                   <textarea
+                    value={vendorForm.notes}
+                    onChange={(e) => setVendorForm({...vendorForm, notes: e.target.value})}
                     className="w-full bg-transparent border-b border-gray-600 py-3 text-white focus:border-gold-500 outline-none transition-colors h-32 resize-none placeholder-gray-500"
                     placeholder="Tell us a bit about your services or what makes you unique..."
                   ></textarea>
                 </div>
 
+                {vendorStatus.message && (
+                  <div className={`p-3 rounded-lg text-sm ${vendorStatus.error ? 'bg-red-900/50 text-red-200' : 'bg-green-900/50 text-green-200'}`}>
+                    {vendorStatus.message}
+                  </div>
+                )}
+
                 <div className="text-center pt-4">
                   <Button
                     variant="goldOutline"
                     className="w-full md:w-auto px-12"
+                    disabled={vendorStatus.loading}
                   >
-                    Submit Vendor Application
+                    {vendorStatus.loading ? 'Submitting...' : 'Submit Vendor Application'}
                   </Button>
                 </div>
               </form>

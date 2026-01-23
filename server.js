@@ -51,7 +51,7 @@ app.post('/api/contact', async (req, res) => {
 });
 
 app.post('/api/vendor', async (req, res) => {
-  const { contactName, businessName, businessType, socials, notes } = req.body;
+  const { contactName, email, phone, businessName, businessType, socials, notes } = req.body;
   
   const mailOptions = {
     from: process.env.SMTP_USER,
@@ -60,6 +60,8 @@ app.post('/api/vendor', async (req, res) => {
     html: `
       <h2>New Vendor Application</h2>
       <p><strong>Contact Name:</strong> ${contactName}</p>
+      <p><strong>Email:</strong> ${email}</p>
+      <p><strong>Phone:</strong> ${phone}</p>
       <p><strong>Business Name:</strong> ${businessName}</p>
       <p><strong>Business Type:</strong> ${businessType}</p>
       <p><strong>Socials/Contact:</strong> ${socials}</p>

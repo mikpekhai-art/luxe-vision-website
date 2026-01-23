@@ -239,6 +239,8 @@ export default function App() {
   
   const [vendorForm, setVendorForm] = useState({
     contactName: '',
+    email: '',
+    phone: '',
     businessName: '',
     businessType: '',
     socials: '',
@@ -279,7 +281,7 @@ export default function App() {
       const data = await res.json();
       if (data.success) {
         setVendorStatus({ loading: false, message: 'Application submitted! We\'ll reach out soon.', error: false });
-        setVendorForm({ contactName: '', businessName: '', businessType: '', socials: '', notes: '' });
+        setVendorForm({ contactName: '', email: '', phone: '', businessName: '', businessType: '', socials: '', notes: '' });
       } else {
         setVendorStatus({ loading: false, message: data.message, error: true });
       }
@@ -912,6 +914,36 @@ export default function App() {
                       onChange={(e) => setVendorForm({...vendorForm, businessName: e.target.value})}
                       className="w-full bg-transparent border-b border-gray-600 py-3 text-white focus:border-gold-500 outline-none transition-colors placeholder-gray-500"
                       placeholder="Luxe Rentals, etc."
+                    />
+                  </div>
+
+                  {/* Email */}
+                  <div>
+                    <label className="block text-xs font-bold uppercase text-gold-500 mb-2">
+                      Email
+                    </label>
+                    <input
+                      type="email"
+                      required
+                      value={vendorForm.email}
+                      onChange={(e) => setVendorForm({...vendorForm, email: e.target.value})}
+                      className="w-full bg-transparent border-b border-gray-600 py-3 text-white focus:border-gold-500 outline-none transition-colors placeholder-gray-500"
+                      placeholder="your@email.com"
+                    />
+                  </div>
+
+                  {/* Phone */}
+                  <div>
+                    <label className="block text-xs font-bold uppercase text-gold-500 mb-2">
+                      Phone Number
+                    </label>
+                    <input
+                      type="tel"
+                      required
+                      value={vendorForm.phone}
+                      onChange={(e) => setVendorForm({...vendorForm, phone: e.target.value})}
+                      className="w-full bg-transparent border-b border-gray-600 py-3 text-white focus:border-gold-500 outline-none transition-colors placeholder-gray-500"
+                      placeholder="(604) 555-1234"
                     />
                   </div>
 

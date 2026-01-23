@@ -228,6 +228,8 @@ export default function App() {
   
   const [contactForm, setContactForm] = useState({
     name: '',
+    email: '',
+    phone: '',
     eventDate: '',
     eventType: 'Wedding',
     package: 'Luxe Essentials ($75-$150)',
@@ -256,7 +258,7 @@ export default function App() {
       const data = await res.json();
       if (data.success) {
         setContactStatus({ loading: false, message: 'Thank you! We\'ll be in touch within 24 hours.', error: false });
-        setContactForm({ name: '', eventDate: '', eventType: 'Wedding', package: 'Luxe Essentials ($75-$150)', vision: '' });
+        setContactForm({ name: '', email: '', phone: '', eventDate: '', eventType: 'Wedding', package: 'Luxe Essentials ($75-$150)', vision: '' });
       } else {
         setContactStatus({ loading: false, message: data.message, error: true });
       }
@@ -770,6 +772,35 @@ export default function App() {
                       value={contactForm.eventDate}
                       onChange={(e) => setContactForm({...contactForm, eventDate: e.target.value})}
                       className="w-full border-b border-gray-300 py-2 focus:border-gold-500 outline-none bg-transparent text-gray-800"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-xs font-bold uppercase text-gray-500 mb-2">
+                      Email
+                    </label>
+                    <input
+                      type="email"
+                      required
+                      value={contactForm.email}
+                      onChange={(e) => setContactForm({...contactForm, email: e.target.value})}
+                      className="w-full border-b border-gray-300 py-2 focus:border-gold-500 outline-none bg-transparent text-gray-800 placeholder-gray-400"
+                      placeholder="jane@email.com"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold uppercase text-gray-500 mb-2">
+                      Phone Number
+                    </label>
+                    <input
+                      type="tel"
+                      required
+                      value={contactForm.phone}
+                      onChange={(e) => setContactForm({...contactForm, phone: e.target.value})}
+                      className="w-full border-b border-gray-300 py-2 focus:border-gold-500 outline-none bg-transparent text-gray-800 placeholder-gray-400"
+                      placeholder="(604) 555-1234"
                     />
                   </div>
                 </div>

@@ -22,7 +22,7 @@ const transporter = nodemailer.createTransport({
 });
 
 app.post('/api/contact', async (req, res) => {
-  const { name, eventDate, eventType, package: selectedPackage, vision } = req.body;
+  const { name, email, phone, eventDate, eventType, package: selectedPackage, vision } = req.body;
   
   const mailOptions = {
     from: process.env.SMTP_USER,
@@ -31,6 +31,8 @@ app.post('/api/contact', async (req, res) => {
     html: `
       <h2>New Event Inquiry</h2>
       <p><strong>Name:</strong> ${name}</p>
+      <p><strong>Email:</strong> ${email}</p>
+      <p><strong>Phone:</strong> ${phone}</p>
       <p><strong>Event Date:</strong> ${eventDate}</p>
       <p><strong>Event Type:</strong> ${eventType}</p>
       <p><strong>Interested Package:</strong> ${selectedPackage}</p>

@@ -76,7 +76,7 @@ app.post('/api/vendor', async (req, res) => {
 });
 
 const PORT = process.env.NODE_ENV === 'production' ? 5000 : 3001;
-const HOST = process.env.NODE_ENV === 'production' ? '0.0.0.0' : 'localhost';
+const HOST = '0.0.0.0';
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(join(__dirname, 'dist')));

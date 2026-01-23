@@ -41,3 +41,11 @@ externalPort = 3000
 deploymentTarget = "static"
 build = ["npm", "run", "build"]
 publicDir = "dist"
+
+[userenv]
+
+[userenv.shared]
+SMTP_HOST = "mail.luxevisionevents.com"
+SMTP_PORT = "465"
+SMTP_USER = "booking@luxevisionevents.com"
+SMTP_TO_EMAIL = "booking@luxevisionevents.com"

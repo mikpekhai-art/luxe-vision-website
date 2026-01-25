@@ -89,6 +89,8 @@ app.post('/api/vendor', async (req, res) => {
       <p><strong>Contact:</strong> ${contactName}</p>
       <p><strong>Business:</strong> ${businessName}</p>
       <p><strong>Email:</strong> ${email}</p>
+      <p><strong>Phone:</strong> ${phone}</p>
+      <p><strong>Socials:</strong> ${socials}</p>
       <p><strong>Notes:</strong> ${notes}</p>
     `,
   };

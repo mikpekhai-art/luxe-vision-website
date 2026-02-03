@@ -1,0 +1,143 @@
+Here's a comprehensive guide you can use as a prompt for another Replit agent:
+
+Email System Setup Guide for Next.js Applications
+Overview
+This system uses Nodemailer (a free Node.js library) to send emails through your own SMTP email server (like cPanel email hosting). It implements a dual-email pattern: one notification to the admin/business owner, and one confirmation to the customer.
+
+Step 1: Install Nodemailer
+npm install nodemailer
+For TypeScript projects, also install types:
+
+npm install --save-dev @types/nodemailer
+Step 2: Required Environment Variables (Secrets)
+Set these in Replit's Secrets tab:
+
+Variable	Description	Example
+EMAIL_HOST	Your SMTP server hostname	mail.yourdomain.com
+EMAIL_USER	Your email address (sender)	info@yourdomain.com
+EMAIL_PASS	Email account password	your-email-password
+ADMIN_EMAIL	(Optional) Where admin notifications go	admin@yourdomain.com
+For cPanel Hosted Email:
+
+EMAIL_HOST = mail.yourdomain.com
+EMAIL_USER = The full email address you created in cPanel
+EMAIL_PASS = The password for that email account
+For Gmail (less recommended):
+
+EMAIL_HOST = smtp.gmail.com
+EMAIL_USER = Your Gmail address
+EMAIL_PASS = App-specific password (not your regular password)
+Step 3: Create API Route Structure
+Create an API route at src/app/api/[form-name]/route.ts:
+
+import { NextRequest, NextResponse } from "next/server";
+import nodemailer from "nodemailer";
+// Optional: Branded email signature HTML
+const SIGNATURE_HTML = `
+<br><br>
+<table style="font-family: Arial, sans-serif; font-size: 14px;">
+  <tr>
+    <td>
+      <strong>Your Name</strong><br>
+      <span>Your Title</span><br>
+      <span>Phone: +1234567890</span><br>
+      <a href="https://yourwebsite.com">yourwebsite.com</a>
+    </td>
+  </tr>
+</table>
+`;
+export async function POST(request: NextRequest) {
+    try {
+        // 1. Parse form data from request
+        const body = await request.json();
+        const { customerName, customerEmail, /* other fields */ } = body;
+        // 2. Create email transporter
+        const transporter = nodemailer.createTransport({
+            host: process.env.EMAIL_HOST,
+            port: 465,
+            secure: true, // true for port 465, false for port 587
+            auth: {
+                user: process.env.EMAIL_USER,
+                pass: process.env.EMAIL_PASS,
+            },
+        });
+        // 3. Send Admin Notification Email
+        await transporter.sendMail({
+            from: `"Your App Name" <${process.env.EMAIL_USER}>`,
+            to: process.env.ADMIN_EMAIL || process.env.EMAIL_USER,
+            replyTo: customerEmail, // Allows you to reply directly to customer
+            subject: `New Inquiry from ${customerName}`,
+            html: `
+                <h2>New Form Submission</h2>
+                <p><strong>Name:</strong> ${customerName}</p>
+                <p><strong>Email:</strong> ${customerEmail}</p>
+                <!-- Add more fields as needed -->
+            `,
+        });
+        // 4. Send Customer Confirmation Email
+        await transporter.sendMail({
+            from: `"Your App Name" <${process.env.EMAIL_USER}>`,
+            to: customerEmail,
+            subject: "We've Received Your Request!",
+            html: `
+                <p>Dear ${customerName},</p>
+                <p>Thank you for contacting us! We've received your inquiry and will get back to you shortly.</p>
+                <p>Best regards,<br>Your Team</p>
+                ${SIGNATURE_HTML}
+            `,
+        });
+        // 5. Return success response
+        return NextResponse.json({ success: true });
+    } catch (error) {
+        console.error("Email error:", error);
+        return NextResponse.json(
+            { error: "Failed to send email" },
+            { status: 500 }
+        );
+    }
+}
+Step 4: Frontend Form Integration
+const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    try {
+        const response = await fetch("/api/contact", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                customerName: formData.name,
+                customerEmail: formData.email,
+                // ... other fields
+            }),
+        });
+        if (response.ok) {
+            // Show success message
+            toast.success("Message sent! Check your email for confirmation.");
+        } else {
+            toast.error("Failed to send. Please try again.");
+        }
+    } catch (error) {
+        toast.error("Something went wrong.");
+    }
+};
+SMTP Configuration Options
+Hosting Provider	HOST	PORT	SECURE
+cPanel	mail.yourdomain.com	465	true
+Gmail	smtp.gmail.com	587	false
+Outlook	smtp.office365.com	587	false
+Zoho	smtp.zoho.com	465	true
+Key Points
+No Per-Email Cost: Uses your existing email hosting
+Dual Email Pattern: Always send both admin notification + customer confirmation
+ReplyTo Field: Set replyTo: customerEmail so when admin replies, it goes to the customer
+HTML Emails: Use inline CSS (not external stylesheets) for email compatibility
+Error Handling: Always wrap in try/catch and return appropriate status codes
+Branded Signature: Create a reusable SIGNATURE_HTML constant for professional emails
+Debugging Tips
+Add console logs to verify environment variables are loaded:
+
+console.log("EMAIL_HOST:", process.env.EMAIL_HOST ? "Set" : "Missing");
+console.log("EMAIL_USER:", process.env.EMAIL_USER ? "Set" : "Missing");
+console.log("EMAIL_PASS:", process.env.EMAIL_PASS ? "Set" : "Missing");
+This setup is free to use (no API costs) and works with any SMTP email provider. The emails are sent server-side through your API routes, keeping credentials secure.
+

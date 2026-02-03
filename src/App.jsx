@@ -258,14 +258,14 @@ export default function App() {
         body: JSON.stringify(contactForm)
       });
       const data = await res.json();
-      if (data.success) {
-        setContactStatus({ loading: false, message: 'Thank you! We\'ll be in touch within 24 hours.', error: false });
+      if (res.ok) {
+        setContactStatus({ loading: false, message: 'Message sent! Check your email for confirmation.', error: false });
         setContactForm({ name: '', email: '', phone: '', eventDate: '', eventType: 'Wedding', package: 'Luxe Essentials ($75-$150)', vision: '' });
       } else {
-        setContactStatus({ loading: false, message: data.message, error: true });
+        setContactStatus({ loading: false, message: data.error || 'Failed to send. Please try again.', error: true });
       }
     } catch (err) {
-      setContactStatus({ loading: false, message: 'Something went wrong. Please try again.', error: true });
+      setContactStatus({ loading: false, message: 'Something went wrong.', error: true });
     }
   };
 
@@ -279,14 +279,14 @@ export default function App() {
         body: JSON.stringify(vendorForm)
       });
       const data = await res.json();
-      if (data.success) {
-        setVendorStatus({ loading: false, message: 'Application submitted! We\'ll reach out soon.', error: false });
+      if (res.ok) {
+        setVendorStatus({ loading: false, message: 'Application sent! Check your email for confirmation.', error: false });
         setVendorForm({ contactName: '', email: '', phone: '', businessName: '', businessType: '', socials: '', notes: '' });
       } else {
-        setVendorStatus({ loading: false, message: data.message, error: true });
+        setVendorStatus({ loading: false, message: data.error || 'Failed to send. Please try again.', error: true });
       }
     } catch (err) {
-      setVendorStatus({ loading: false, message: 'Something went wrong. Please try again.', error: true });
+      setVendorStatus({ loading: false, message: 'Something went wrong.', error: true });
     }
   };
 

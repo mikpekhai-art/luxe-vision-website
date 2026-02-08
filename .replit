@@ -66,10 +66,6 @@ run = ["node", "server.js"]
 [userenv]
 
 [userenv.shared]
-SMTP_HOST = "mail.luxevisionevents.com"
-SMTP_PORT = "465"
-SMTP_USER = "booking@luxevisionevents.com"
-SMTP_TO_EMAIL = "booking@luxevisionevents.com"
 
 [userenv.production]
 NODE_ENV = "production"

@@ -1,7 +1,7 @@
 # Luxe Vision
 
 ## Overview
-Luxe Vision is an event consultation and coordinating website built with React and Vite, featuring email form submissions via Nodemailer.
+Luxe Vision is an event consultation and coordinating website built with React and Vite, featuring email form submissions via Nodemailer using cPanel-hosted email.
 
 ## Project Architecture
 - **Frontend Framework**: React 19
@@ -32,15 +32,20 @@ Luxe Vision is an event consultation and coordinating website built with React a
 - Run `npm run build` to build for production
 
 ## Email Configuration
-Form submissions are sent to booking@luxevisionevents.com via SMTP.
+Uses cPanel-hosted email via Nodemailer (same pattern as visionfly project).
+Sends dual emails: admin notification + client confirmation.
 
-Environment variables required:
-- SMTP_HOST: mail.luxevisionevents.com
-- SMTP_PORT: 465
-- SMTP_USER: booking@luxevisionevents.com
-- SMTP_PASSWORD: (stored as secret)
-- SMTP_TO_EMAIL: booking@luxevisionevents.com
+Secrets required (stored in Replit Secrets):
+- EMAIL_HOST: cPanel mail server hostname (mail.luxevisionevents.com)
+- EMAIL_USER: info@luxevisionevents.com
+- EMAIL_PASS: cPanel email password
+- EMAIL_PORT: 465
 
 ## API Endpoints
-- POST /api/contact - Submit event inquiry form
-- POST /api/vendor - Submit vendor application form
+- POST /api/contact - Submit event inquiry form (sends admin notification + client confirmation)
+- POST /api/vendor - Submit vendor application form (sends admin notification + vendor confirmation)
+
+## User Preferences
+- Email system follows the same cPanel SMTP pattern used in the visionfly project
+- Both forms collect: name, email, phone number, and relevant details
+- All emails sent from info@luxevisionevents.com

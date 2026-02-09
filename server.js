@@ -35,8 +35,7 @@ const SIGNATURE_HTML = `
     <td>
       <strong>Luxe Vision Events</strong><br>
       <span>Event Consultation & Coordinating</span><br>
-      <span>Phone: 604-561-4209</span><br>
-      <a href="https://luxevisionevents.com">luxevisionevents.com</a>
+      <span>Phone: 604-561-4209</span>
     </td>
   </tr>
 </table>

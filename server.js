@@ -140,3 +140,4 @@ if (process.env.NODE_ENV === 'production') {
 app.listen(PORT, HOST, () => {
   console.log(`API server running on ${HOST}:${PORT}`);
 });
+export default app;

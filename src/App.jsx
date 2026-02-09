@@ -700,7 +700,7 @@ export default function App() {
                 <div className="space-y-4">
                   <div className="flex items-center space-x-3">
                     <Mail className="text-gold-500 w-5 h-5" />
-                    <span>booking@luxevisionevents.com</span>
+                    <span>info@luxevisionevents.com</span>
                   </div>
                   <div className="flex items-center space-x-3">
                     <Instagram className="text-gold-500 w-5 h-5" />
@@ -1039,7 +1039,7 @@ export default function App() {
             >
               Facebook
             </a>
-            <a href="mailto:booking@luxevisionevents.com" className="hover:text-gold-500 transition-colors">
+            <a href="mailto:info@luxevisionevents.com" className="hover:text-gold-500 transition-colors">
               Email
             </a>
             <a
